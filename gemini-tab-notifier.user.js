@@ -10,6 +10,7 @@
 // @downloadURL  https://raw.githubusercontent.com/Drainyyyy/gemini-tab-notifier/main/gemini-tab-notifier.user.js
 // @supportURL   https://github.com/Drainyyyy/gemini-tab-notifier/issues
 // @grant        none
+// @license      MIT
 // ==/UserScript==
 
 (function() {

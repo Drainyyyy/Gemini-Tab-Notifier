@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
+  <!-- Group translated slightly to perfectly center the offset composition -->
+  <g transform="translate(-2, 2)">
+    
+    <!-- Bottom-Left Three Quarters (Google Blue) -->
+    <path d="M 50 10
+             L 50 48
+             Q 50 50, 52 50
+             L 90 50
+             A 40 40 0 0 0 50 90
+             A 40 40 0 0 0 10 50
+             A 40 40 0 0 0 50 10 Z" fill="#1A73E8" />
+
+    <!-- Top-Right Quarter Notification (Alert Red, Broken Off) -->
+    <path d="M 50 10
+             A 40 40 0 0 0 90 50
+             L 52 50
+             Q 50 50, 50 48 Z" fill="#EA4335" transform="translate(4, -4)" />
+          
+  </g>
+</svg>

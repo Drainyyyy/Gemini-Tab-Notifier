@@ -1,0 +1,54 @@
+name: Auto-Release & Changelog
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'gemini-tab-notifier.user.js'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract Version from Script
+        id: get_version
+        run: |
+          VERSION=$(grep -oP '(?<=@version\s+)\d+\.\d+\.\d+' gemini-tab-notifier.user.js | head -1)
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Extracted version: $VERSION"
+
+      - name: Check if Tag Exists
+        id: check_tag
+        run: |
+          if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "Tag exists."
+            echo "EXISTS=true" >> $GITHUB_ENV
+          else
+            echo "Tag does not exist."
+            echo "EXISTS=false" >> $GITHUB_ENV
+          fi
+
+      - name: Generate Changelog
+        if: env.EXISTS == 'false'
+        id: changelog
+        uses: mikepenz/release-changelog-builder-action@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        if: env.EXISTS == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ env.VERSION }}
+          name: Release v${{ env.VERSION }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          files: gemini-tab-notifier.user.js
