@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Gemini Tab Notifier
 // @namespace    https://github.com/Drainyyyy/gemini-tab-notifier
-// @version      1.0.2
+// @version      1.0.3
 // @description  Changes the tab icon to a red Gemini spark when generation is complete (CSP-safe).
 // @author       JR
 // @match        https://gemini.google.com/*
