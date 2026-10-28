@@ -22,10 +22,13 @@ jobs:
       - name: Extract Version from Script
         id: get_version
         run: |
-          VERSION=$(grep -oP '(?<=@version\s+)\d+\.\d+\.\d+' gemini-tab-notifier.user.js | head -1)
+          VERSION=$(awk '/@version/ {print $3}' gemini-tab-notifier.user.js)
+          
           if [ -z "$VERSION" ]; then
-            VERSION=$(grep -oP '(?<=@version\s+)\d+\.\d+' gemini-tab-notifier.user.js | head -1)
+            echo "Error: Version number could not be extracted!"
+            exit 1
           fi
+          
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Extracted version: $VERSION"
 
@@ -33,10 +36,10 @@ jobs:
         id: check_tag
         run: |
           if git rev-parse "v${{ env.VERSION }}" >/dev/null 2>&1; then
-            echo "Tag exists."
+            echo "Tag v${{ env.VERSION }} exists."
             echo "EXISTS=true" >> $GITHUB_ENV
           else
-            echo "Tag does not exist."
+            echo "Tag v${{ env.VERSION }} does not exist."
             echo "EXISTS=false" >> $GITHUB_ENV
           fi
 
@@ -45,6 +48,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ env.VERSION }}
-          name: Release v${{ env.VERSION }}
+          name: v${{ env.VERSION }}
           generate_release_notes: true
           files: gemini-tab-notifier.user.js
